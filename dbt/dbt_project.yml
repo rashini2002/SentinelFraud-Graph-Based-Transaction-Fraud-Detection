@@ -34,3 +34,13 @@ models:
     # Config indicated by + and applies to all files under models/example/
     example:
       +materialized: view
+
+# --- Entity-linkage tuning ---
+# Groups (transactions sharing a card1+addr1, or a DeviceInfo) larger than
+# this are excluded from edge construction. Without this cap, a single
+# common attribute value shared by thousands of unrelated transactions
+# would produce a combinatorial explosion of low-value edges (a fully
+# connected clique of N transactions produces N*(N-1)/2 edges) — noise,
+# not fraud signal. See docs/DECISIONS.md Day 6 for the reasoning.
+vars:
+  max_linkage_group_size: 50

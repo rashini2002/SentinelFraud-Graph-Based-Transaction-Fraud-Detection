@@ -182,3 +182,22 @@ identifiers in downstream SQL.
 - Verified row counts post-build: 400,000 total rows, 483 with a non-null
   `ring_id` — an exact match to the Day 4 fraud-ring injection count,
   confirming no data was lost or duplicated in the load → staging pipeline.
+
+
+## Day 6 — Intermediate Entity-Linkage Models
+
+Combinatorial explosion risk — addressed with group-size capping: A naive self-join on a shared attribute (card1+addr1, or DeviceInfo) risks producing enormous numbers of edges if any single value is shared by many transactions — a fully-connected group of N transactions produces N*(N-1)/2 edges. To prevent this, group sizes are computed first, and only groups with 2 to {{ var('max_linkage_group_size') }} (currently 50) members are joined into pairs. Groups above this threshold are excluded entirely — they are more likely a common demographic/generic-value collision than a genuine relationship, and including them would flood the graph with low-value, fully-connected cliques.
+
+Two intermediate models built:
+
+int_shared_card_addr (Tier 2, weak signal): pairs sharing both card1 AND addr1 (not either alone, since either alone is too common to be a meaningful signal by itself).
+int_shared_device (Tier 1, high confidence): pairs sharing DeviceInfo, restricted to has_device_identity = true rows.
+
+Both include an is_true_ring_pair flag (comparing ring_id between the pair) for evaluation purposes only — same restriction as ring_id/ring_tier throughout this project: never used as a graph-construction input or model feature, only for scoring detection quality later.
+
+[RESULTS]:
+
+int_shared_card_addr: 12,086 total edges, 1,859 true ring pairs (~15% of edges correspond to an actual injected ring). Roughly matches the expected sum of within-ring pairwise combinations across the 88 injected rings, confirming the injection and linkage logic are consistent with each other.
+int_shared_device: 66,322 total edges, only 720 true ring pairs (~1%).
+
+Finding — DeviceInfo is noisier than expected as a "high-confidence" signal: Day 2 profiling showed DeviceInfo has only 1,786 unique values across ~118,666 identity-matched rows — an average real-world group size of ~66 even before capping. This indicates DeviceInfo contains many generic, recurring strings (e.g. common OS/browser labels or device model codes) rather than truly unique-per-user fingerprints, so plenty of unrelated real transactions naturally collide on device values. This means raw device-sharing edge count alone is a weaker signal than assumed in the original two-tier design — Day 10's community detection will need to rely on edge density/clustering structure, not just edge presence, to separate genuine fraud rings from generic device-string collisions. Documented here as a design consideration carried into Phase 3, not a bug to fix now.
