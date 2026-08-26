@@ -1,0 +1,26 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: public
+    tables:
+      - name: raw_transactions
+        description: >
+          Synthetic transaction data (SDV-generated from IEEE-CIS) with
+          injected fraud rings, loaded via src/load_to_postgres.py.
+        loaded_at_field: _loaded_at
+        columns:
+          - name: TransactionID
+            description: Unique transaction identifier (synthetic).
+          - name: isFraud
+            description: Original fraud label (1 = fraud, 0 = legitimate).
+          - name: ring_id
+            description: >
+              Ground-truth fraud ring identifier, injected synthetically.
+              For evaluation purposes only — must never be used as a model
+              feature or as an input to graph construction.
+          - name: ring_tier
+            description: >
+              "tier1" (high confidence — card/addr + device overlap) or
+              "tier2" (weak signal — card/addr overlap only). Ground truth,
+              evaluation-only, same restriction as ring_id.

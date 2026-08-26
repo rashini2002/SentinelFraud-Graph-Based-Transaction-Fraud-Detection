@@ -1,0 +1,210 @@
+[0m21:55:46.199637 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x105c4b700>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1109159c0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1109160e0>]}
+
+
+============================== 21:55:46.201711 | 3d9d57b4-cafd-4a38-ae50-ba28136783d5 ==============================
+[0m21:55:46.201711 [info ] [MainThread]: Running with dbt=1.8.10
+[0m21:55:46.201993 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/Users/rashinidissanayake/.dbt', 'debug': 'False', 'warn_error': 'None', 'log_path': 'logs', 'version_check': 'True', 'fail_fast': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'empty': 'None', 'quiet': 'False', 'no_print': 'None', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'invocation_command': 'dbt init sentinelfraud_dbt --skip-profile-setup', 'static_parser': 'True', 'log_format': 'default', 'target_path': 'None', 'introspect': 'True', 'send_anonymous_usage_stats': 'True'}
+[0m21:55:46.208870 [warn ] [MainThread]: [[33mWARNING[0m]: This version of dbt is deprecated and no longer receives regular patches, including for known bugs. Please upgrade to a newer supported version of dbt for new projects: https://docs.getdbt.com/docs/dbt-versions?utm_source=dbt-cli
+[0m21:55:46.209110 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'deprecated_version_invocation', 'label': '3d9d57b4-cafd-4a38-ae50-ba28136783d5', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x101085960>]}
+[0m21:55:46.209346 [warn ] [MainThread]: [ConfigFolderDirectory]: Unable to parse logging event dictionary. Failed to parse dir field: expected string or bytes-like object.. Dictionary: {'dir': PosixPath('/Users/rashinidissanayake/.dbt')}
+[0m21:55:46.209498 [info ] [MainThread]: Creating dbt configuration folder at 
+[0m21:55:46.209737 [error] [MainThread]: Encountered an error:
+[Errno 1] Operation not permitted: '/Users/rashinidissanayake/.dbt'
+[0m21:55:46.213233 [error] [MainThread]: Traceback (most recent call last):
+  File "/Users/rashinidissanayake/Desktop/sentinelfraud/venv/lib/python3.10/site-packages/dbt/cli/requires.py", line 143, in wrapper
+    result, success = func(*args, **kwargs)
+  File "/Users/rashinidissanayake/Desktop/sentinelfraud/venv/lib/python3.10/site-packages/dbt/cli/requires.py", line 106, in wrapper
+    return func(*args, **kwargs)
+  File "/Users/rashinidissanayake/Desktop/sentinelfraud/venv/lib/python3.10/site-packages/dbt/cli/main.py", line 470, in init
+    results = task.run()
+  File "/Users/rashinidissanayake/Desktop/sentinelfraud/venv/lib/python3.10/site-packages/dbt/task/init.py", line 304, in run
+    self.create_profiles_dir(profiles_dir)
+  File "/Users/rashinidissanayake/Desktop/sentinelfraud/venv/lib/python3.10/site-packages/dbt/task/init.py", line 71, in create_profiles_dir
+    dbt_common.clients.system.make_directory(profiles_dir)
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/functools.py", line 878, in wrapper
+    return dispatch(args[0].__class__)(*args, **kw)
+  File "/Users/rashinidissanayake/Desktop/sentinelfraud/venv/lib/python3.10/site-packages/dbt_common/clients/system.py", line 214, in _
+    path.mkdir(parents=True, exist_ok=True)
+  File "/Library/Frameworks/Python.framework/Versions/3.10/lib/python3.10/pathlib.py", line 1173, in mkdir
+    self._accessor.mkdir(self, mode)
+PermissionError: [Errno 1] Operation not permitted: '/Users/rashinidissanayake/.dbt'
+
+[0m21:55:46.215366 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": false, "command_wall_clock_time": 0.04785825, "process_in_blocks": "0", "process_kernel_time": 0.080992, "process_mem_max_rss": "122896384", "process_out_blocks": "0", "process_user_time": 0.98652}
+[0m21:55:46.215697 [debug] [MainThread]: Command `dbt init` failed at 21:55:46.215629 after 0.05 seconds
+[0m21:55:46.215934 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x105c4b700>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x110917520>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x110919900>]}
+[0m21:55:46.216247 [debug] [MainThread]: Flushing usage events
+[0m21:55:46.220739 [debug] [MainThread]: Error sending anonymous usage statistics. Disabling tracking for this execution. If you wish to permanently disable tracking, see: https://docs.getdbt.com/reference/global-configs#send-anonymous-usage-stats.
+[0m22:17:21.044042 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x108473340>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10a8d50c0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10a8d57e0>]}
+
+
+============================== 22:17:21.046173 | 87858d36-2c7d-4478-a6f5-6fbd87aa39fb ==============================
+[0m22:17:21.046173 [info ] [MainThread]: Running with dbt=1.8.10
+[0m22:17:21.046441 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'version_check': 'True', 'profiles_dir': '/Users/rashinidissanayake/.dbt', 'log_path': 'logs', 'debug': 'False', 'fail_fast': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'empty': 'None', 'quiet': 'False', 'no_print': 'None', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'static_parser': 'True', 'introspect': 'True', 'invocation_command': 'dbt init sentinelfraud_dbt --skip-profile-setup', 'target_path': 'None', 'log_format': 'default', 'send_anonymous_usage_stats': 'True'}
+[0m22:17:21.054249 [warn ] [MainThread]: [[33mWARNING[0m]: This version of dbt is deprecated and no longer receives regular patches, including for known bugs. Please upgrade to a newer supported version of dbt for new projects: https://docs.getdbt.com/docs/dbt-versions?utm_source=dbt-cli
+[0m22:17:21.054517 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'deprecated_version_invocation', 'label': '87858d36-2c7d-4478-a6f5-6fbd87aa39fb', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x104beeef0>]}
+[0m22:17:21.054748 [warn ] [MainThread]: [ConfigFolderDirectory]: Unable to parse logging event dictionary. Failed to parse dir field: expected string or bytes-like object.. Dictionary: {'dir': PosixPath('/Users/rashinidissanayake/.dbt')}
+[0m22:17:21.054882 [info ] [MainThread]: Creating dbt configuration folder at 
+[0m22:17:21.055645 [debug] [MainThread]: Starter project path: /Users/rashinidissanayake/Desktop/sentinelfraud/venv/lib/python3.10/site-packages/dbt/include/starter_project
+[0m22:17:21.059243 [info ] [MainThread]: 
+Your new dbt project "sentinelfraud_dbt" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m22:17:21.061428 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": true, "command_wall_clock_time": 0.044055, "process_in_blocks": "0", "process_kernel_time": 0.101241, "process_mem_max_rss": "122535936", "process_out_blocks": "0", "process_user_time": 0.98573}
+[0m22:17:21.061716 [debug] [MainThread]: Command `dbt init` succeeded at 22:17:21.061667 after 0.04 seconds
+[0m22:17:21.061969 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x108473340>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10a8d4580>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10a8d50c0>]}
+[0m22:17:21.062142 [debug] [MainThread]: Flushing usage events
+[0m22:17:21.067954 [debug] [MainThread]: Error sending anonymous usage statistics. Disabling tracking for this execution. If you wish to permanently disable tracking, see: https://docs.getdbt.com/reference/global-configs#send-anonymous-usage-stats.
+[0m22:18:23.587318 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10859b2b0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10a429000>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10a429720>]}
+
+
+============================== 22:18:23.589557 | b7bc8625-fb79-4468-9d48-3a9e459408b6 ==============================
+[0m22:18:23.589557 [info ] [MainThread]: Running with dbt=1.8.10
+[0m22:18:23.589838 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/Users/rashinidissanayake/.dbt', 'fail_fast': 'False', 'version_check': 'True', 'log_path': 'logs', 'debug': 'False', 'warn_error': 'None', 'use_colors': 'True', 'use_experimental_parser': 'False', 'empty': 'None', 'quiet': 'False', 'no_print': 'None', 'log_format': 'default', 'invocation_command': 'dbt init sentinelfraud_dbt', 'static_parser': 'True', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'target_path': 'None', 'introspect': 'True', 'send_anonymous_usage_stats': 'True'}
+[0m22:18:23.596296 [warn ] [MainThread]: [[33mWARNING[0m]: This version of dbt is deprecated and no longer receives regular patches, including for known bugs. Please upgrade to a newer supported version of dbt for new projects: https://docs.getdbt.com/docs/dbt-versions?utm_source=dbt-cli
+[0m22:18:23.596507 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'deprecated_version_invocation', 'label': 'b7bc8625-fb79-4468-9d48-3a9e459408b6', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x104db2ce0>]}
+[0m22:18:23.596920 [info ] [MainThread]: A project called sentinelfraud_dbt already exists here.
+[0m22:18:23.599022 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": true, "command_wall_clock_time": 0.038751207, "process_in_blocks": "0", "process_kernel_time": 0.080553, "process_mem_max_rss": "121552896", "process_out_blocks": "0", "process_user_time": 0.94354}
+[0m22:18:23.599328 [debug] [MainThread]: Command `dbt init` succeeded at 22:18:23.599274 after 0.04 seconds
+[0m22:18:23.599477 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10859b2b0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10a428550>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10a42add0>]}
+[0m22:18:23.599615 [debug] [MainThread]: Flushing usage events
+[0m22:19:51.566939 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1041ce1a0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x121c14a60>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x121c14340>]}
+
+
+============================== 22:19:51.568942 | fd538b7d-8c8e-4232-b386-f64ff8a49108 ==============================
+[0m22:19:51.568942 [info ] [MainThread]: Running with dbt=1.8.10
+[0m22:19:51.569196 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'fail_fast': 'False', 'version_check': 'True', 'log_path': 'logs', 'profiles_dir': '/Users/rashinidissanayake/.dbt', 'debug': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'empty': 'None', 'quiet': 'False', 'no_print': 'None', 'log_format': 'default', 'introspect': 'True', 'static_parser': 'True', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'target_path': 'None', 'invocation_command': 'dbt init', 'send_anonymous_usage_stats': 'True'}
+[0m22:19:51.575571 [warn ] [MainThread]: [[33mWARNING[0m]: This version of dbt is deprecated and no longer receives regular patches, including for known bugs. Please upgrade to a newer supported version of dbt for new projects: https://docs.getdbt.com/docs/dbt-versions?utm_source=dbt-cli
+[0m22:19:51.575775 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'deprecated_version_invocation', 'label': 'fd538b7d-8c8e-4232-b386-f64ff8a49108', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x121c14a60>]}
+[0m22:20:04.965307 [debug] [MainThread]: Starter project path: /Users/rashinidissanayake/Desktop/sentinelfraud/venv/lib/python3.10/site-packages/dbt/include/starter_project
+[0m22:20:04.975363 [info ] [MainThread]: 
+Your new dbt project "sentinelfraud" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m22:20:04.975872 [info ] [MainThread]: Setting up your profile.
+[0m22:21:52.137488 [error] [MainThread]: Encountered an error:
+
+[0m22:21:52.141803 [error] [MainThread]: Traceback (most recent call last):
+  File "/Users/rashinidissanayake/Desktop/sentinelfraud/venv/lib/python3.10/site-packages/dbt/cli/requires.py", line 143, in wrapper
+    result, success = func(*args, **kwargs)
+  File "/Users/rashinidissanayake/Desktop/sentinelfraud/venv/lib/python3.10/site-packages/dbt/cli/requires.py", line 106, in wrapper
+    return func(*args, **kwargs)
+  File "/Users/rashinidissanayake/Desktop/sentinelfraud/venv/lib/python3.10/site-packages/dbt/cli/main.py", line 470, in init
+    results = task.run()
+  File "/Users/rashinidissanayake/Desktop/sentinelfraud/venv/lib/python3.10/site-packages/dbt/task/init.py", line 350, in run
+    self.setup_profile(profile_name)
+  File "/Users/rashinidissanayake/Desktop/sentinelfraud/venv/lib/python3.10/site-packages/dbt/task/init.py", line 264, in setup_profile
+    self.create_profile_from_target(adapter, profile_name=profile_name)
+  File "/Users/rashinidissanayake/Desktop/sentinelfraud/venv/lib/python3.10/site-packages/dbt/task/init.py", line 181, in create_profile_from_target
+    self.create_profile_from_profile_template(profile_template, profile_name)
+  File "/Users/rashinidissanayake/Desktop/sentinelfraud/venv/lib/python3.10/site-packages/dbt/task/init.py", line 165, in create_profile_from_profile_template
+    target = self.generate_target_from_input(prompts, initial_target)
+  File "/Users/rashinidissanayake/Desktop/sentinelfraud/venv/lib/python3.10/site-packages/dbt/task/init.py", line 131, in generate_target_from_input
+    target[key] = click.prompt(
+  File "/Users/rashinidissanayake/Desktop/sentinelfraud/venv/lib/python3.10/site-packages/click/termui.py", line 262, in prompt
+    value = prompt_func(prompt)
+  File "/Users/rashinidissanayake/Desktop/sentinelfraud/venv/lib/python3.10/site-packages/click/termui.py", line 245, in prompt_func
+    raise Abort() from None
+click.exceptions.Abort
+
+[0m22:21:52.146371 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": false, "command_wall_clock_time": 120.60483, "process_in_blocks": "0", "process_kernel_time": 0.109986, "process_mem_max_rss": "120602624", "process_out_blocks": "0", "process_user_time": 1.021459}
+[0m22:21:52.147210 [debug] [MainThread]: Command `dbt init` failed at 22:21:52.147064 after 120.61 seconds
+[0m22:21:52.147878 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1041ce1a0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x12245fe50>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x12245d8a0>]}
+[0m22:21:52.148465 [debug] [MainThread]: Flushing usage events
+[0m22:22:10.229773 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x105d02fb0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x107bc4cd0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x107bc53f0>]}
+
+
+============================== 22:22:10.231801 | f8a70614-e946-47c4-a5aa-9bfc7d5690eb ==============================
+[0m22:22:10.231801 [info ] [MainThread]: Running with dbt=1.8.10
+[0m22:22:10.232046 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/Users/rashinidissanayake/.dbt', 'version_check': 'True', 'debug': 'False', 'log_path': 'logs', 'fail_fast': 'False', 'warn_error': 'None', 'use_colors': 'True', 'use_experimental_parser': 'False', 'empty': 'None', 'quiet': 'False', 'no_print': 'None', 'log_format': 'default', 'introspect': 'True', 'invocation_command': 'dbt init', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'target_path': 'None', 'static_parser': 'True', 'send_anonymous_usage_stats': 'True'}
+[0m22:22:10.238531 [warn ] [MainThread]: [[33mWARNING[0m]: This version of dbt is deprecated and no longer receives regular patches, including for known bugs. Please upgrade to a newer supported version of dbt for new projects: https://docs.getdbt.com/docs/dbt-versions?utm_source=dbt-cli
+[0m22:22:10.238736 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'deprecated_version_invocation', 'label': 'f8a70614-e946-47c4-a5aa-9bfc7d5690eb', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x102552ce0>]}
+[0m22:22:16.904277 [info ] [MainThread]: A project called sentinelfraud already exists here.
+[0m22:22:16.909004 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": true, "command_wall_clock_time": 6.7053075, "process_in_blocks": "0", "process_kernel_time": 0.087452, "process_mem_max_rss": "123125760", "process_out_blocks": "0", "process_user_time": 0.987862}
+[0m22:22:16.909527 [debug] [MainThread]: Command `dbt init` succeeded at 22:22:16.909427 after 6.71 seconds
+[0m22:22:16.910032 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x105d02fb0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x107bc4550>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x107bc6ad0>]}
+[0m22:22:16.910381 [debug] [MainThread]: Flushing usage events
+[0m22:22:41.048371 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x111e52470>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x114818670>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x114819c90>]}
+
+
+============================== 22:22:41.050456 | ba46908c-b976-489c-8ac6-d3665fdb5928 ==============================
+[0m22:22:41.050456 [info ] [MainThread]: Running with dbt=1.8.10
+[0m22:22:41.050706 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'fail_fast': 'False', 'debug': 'False', 'log_path': 'logs', 'version_check': 'True', 'profiles_dir': '/Users/rashinidissanayake/.dbt', 'use_colors': 'True', 'use_experimental_parser': 'False', 'empty': 'None', 'quiet': 'False', 'no_print': 'None', 'log_format': 'default', 'introspect': 'True', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'static_parser': 'True', 'target_path': 'None', 'invocation_command': 'dbt init', 'send_anonymous_usage_stats': 'True'}
+[0m22:22:41.057201 [warn ] [MainThread]: [[33mWARNING[0m]: This version of dbt is deprecated and no longer receives regular patches, including for known bugs. Please upgrade to a newer supported version of dbt for new projects: https://docs.getdbt.com/docs/dbt-versions?utm_source=dbt-cli
+[0m22:22:41.057374 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'deprecated_version_invocation', 'label': 'ba46908c-b976-489c-8ac6-d3665fdb5928', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x114818280>]}
+[0m22:22:42.513229 [info ] [MainThread]: A project called sentinelfraud_dbt already exists here.
+[0m22:22:42.518271 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": true, "command_wall_clock_time": 1.495648, "process_in_blocks": "0", "process_kernel_time": 0.097411, "process_mem_max_rss": "122568704", "process_out_blocks": "0", "process_user_time": 0.983604}
+[0m22:22:42.519054 [debug] [MainThread]: Command `dbt init` succeeded at 22:22:42.518875 after 1.50 seconds
+[0m22:22:42.519682 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x111e52470>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x114818670>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x11481a830>]}
+[0m22:22:42.520256 [debug] [MainThread]: Flushing usage events
+[0m22:23:37.363672 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x103ddf070>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x105c6cdf0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x105c6d510>]}
+
+
+============================== 22:23:37.365659 | e7743a5a-53c8-42f1-b518-43d969e447b6 ==============================
+[0m22:23:37.365659 [info ] [MainThread]: Running with dbt=1.8.10
+[0m22:23:37.365899 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/Users/rashinidissanayake/.dbt', 'fail_fast': 'False', 'warn_error': 'None', 'log_path': 'logs', 'debug': 'False', 'version_check': 'True', 'use_colors': 'True', 'use_experimental_parser': 'False', 'empty': 'None', 'quiet': 'False', 'no_print': 'None', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'introspect': 'True', 'invocation_command': 'dbt init', 'static_parser': 'True', 'target_path': 'None', 'log_format': 'default', 'send_anonymous_usage_stats': 'True'}
+[0m22:23:37.372193 [warn ] [MainThread]: [[33mWARNING[0m]: This version of dbt is deprecated and no longer receives regular patches, including for known bugs. Please upgrade to a newer supported version of dbt for new projects: https://docs.getdbt.com/docs/dbt-versions?utm_source=dbt-cli
+[0m22:23:37.372388 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'deprecated_version_invocation', 'label': 'e7743a5a-53c8-42f1-b518-43d969e447b6', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x100762ce0>]}
+[0m22:23:43.931896 [debug] [MainThread]: Starter project path: /Users/rashinidissanayake/Desktop/sentinelfraud/venv/lib/python3.10/site-packages/dbt/include/starter_project
+[0m22:23:43.942560 [info ] [MainThread]: 
+Your new dbt project "sentinelfraud_dbt" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m22:23:43.943498 [info ] [MainThread]: Setting up your profile.
+[0m22:24:37.903492 [info ] [MainThread]: Profile sentinelfraud_dbt written to /Users/rashinidissanayake/.dbt/profiles.yml using target's profile_template.yml and your supplied values. Run 'dbt debug' to validate the connection.
+[0m22:24:37.908937 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": true, "command_wall_clock_time": 60.569595, "process_in_blocks": "0", "process_kernel_time": 0.107503, "process_mem_max_rss": "125009920", "process_out_blocks": "0", "process_user_time": 1.002281}
+[0m22:24:37.909956 [debug] [MainThread]: Command `dbt init` succeeded at 22:24:37.909778 after 60.57 seconds
+[0m22:24:37.910522 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x103ddf070>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1063c66b0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x105c6ec20>]}
+[0m22:24:37.911039 [debug] [MainThread]: Flushing usage events
+[0m22:36:09.798008 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1070d35b0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1093d9a20>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1093da140>]}
+
+
+============================== 22:36:09.800082 | 2729a918-116b-4917-a1b0-640fa431e75c ==============================
+[0m22:36:09.800082 [info ] [MainThread]: Running with dbt=1.8.10
+[0m22:36:09.800332 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/Users/rashinidissanayake/.dbt', 'debug': 'False', 'version_check': 'True', 'log_path': 'logs', 'fail_fast': 'False', 'warn_error': 'None', 'use_colors': 'True', 'use_experimental_parser': 'False', 'empty': 'False', 'quiet': 'False', 'no_print': 'None', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'static_parser': 'True', 'introspect': 'True', 'invocation_command': 'dbt run --select stg_transactions', 'target_path': 'None', 'log_format': 'default', 'send_anonymous_usage_stats': 'True'}
+[0m22:36:09.800487 [info ] [MainThread]: This version of dbt is deprecated and no longer receives regular patches, including for known bugs. We recommend upgrading to a newer supported version of dbt: https://docs.getdbt.com/docs/dbt-versions
+[0m22:36:09.800627 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'deprecated_version_invocation', 'label': '2729a918-116b-4917-a1b0-640fa431e75c', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1070d35b0>]}
+[0m22:36:09.800873 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No dbt_project.yml found at expected path /Users/rashinidissanayake/Desktop/sentinelfraud/dbt_project.yml
+  Verify that each entry within packages.yml (and their transitive dependencies) contains a file named dbt_project.yml
+  
+[0m22:36:09.802774 [debug] [MainThread]: Resource report: {"command_name": "run", "command_success": false, "command_wall_clock_time": 0.032823876, "process_in_blocks": "0", "process_kernel_time": 0.093647, "process_mem_max_rss": "121700352", "process_out_blocks": "0", "process_user_time": 0.99688}
+[0m22:36:09.803071 [debug] [MainThread]: Command `dbt run` failed at 22:36:09.803027 after 0.03 seconds
+[0m22:36:09.803247 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1070d35b0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1093d9e10>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1093db7c0>]}
+[0m22:36:09.804032 [debug] [MainThread]: Flushing usage events

@@ -149,3 +149,36 @@ Ground truth handling: ring_id and ring_tier are stored both as columns in the m
 483 transactions (0.121% of the 400K synthetic dataset) are involved in a ring — a small, realistic fraction, consistent with fraud rings being a minority pattern even within fraud-labeled transactions.
 Tier 1 mean ring size: 6.3 (max 17). Tier 2 mean ring size: 5.07 (max 20).
 27 mule (non-fraud-labeled) rows recruited into rings — somewhat lower than the 10% target of ~48 across 483 members, because the mule count per ring is rounded down for small rings (many small rings round to 0 mules). Not corrected, since it doesn't affect the validity of the design — just noted here for accuracy.
+
+---
+
+## Day 5 — dbt Project Scaffolding & First Staging Model
+
+**dbt version note:** running dbt-core 1.8.10, which prints a deprecation
+warning on every command (no longer receiving patches). Decision: continue
+with this version for the remainder of the build rather than upgrading
+mid-project, since an upgrade could introduce its own compatibility issues
+(similar to the SDV version drift hit in Day 3). Documented as a known,
+accepted limitation rather than an oversight.
+
+**Setup hiccup:** an interrupted first `dbt init` attempt (aborted mid-prompt)
+left a partially-created project folder that blocked subsequent init attempts
+with "a project called X already exists here." Resolved by removing the
+partial folders and rerunning `dbt init` to completion without interruption.
+
+**Data loading:** the ring-injected synthetic dataset (from Day 4) was loaded
+into Postgres as `raw_transactions` via a dedicated script
+(src/load_to_postgres.py) using pandas' `to_sql()`. Column names retained
+their original mixed-case (e.g. `TransactionID`), requiring quoted
+identifiers in downstream SQL.
+
+**First staging model — stg_transactions:**
+- Defined `raw_transactions` as a dbt source (models/staging/sources.yml),
+  with explicit column descriptions flagging `ring_id`/`ring_tier` as
+  evaluation-only ground truth, never to be used as model features.
+- Built `stg_transactions.sql`: renames all columns to snake_case, casts
+  types explicitly (bigint, numeric, boolean, text), and does no business
+  logic — staging models are intentionally "thin," per dbt convention.
+- Verified row counts post-build: 400,000 total rows, 483 with a non-null
+  `ring_id` — an exact match to the Day 4 fraud-ring injection count,
+  confirming no data was lost or duplicated in the load → staging pipeline.
