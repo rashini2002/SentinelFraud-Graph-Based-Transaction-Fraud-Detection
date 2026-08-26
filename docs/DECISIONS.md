@@ -106,3 +106,26 @@ This gives two ring types to separately evaluate against during community
 detection (Day 10), testing whether the graph correctly assigns higher
 confidence/density to Tier 1 rings than Tier 2 rings — a more nuanced
 evaluation than a single flat "recovered ring" metric.
+
+## Day 3 — Synthetic Data Generation Scope & Method
+
+Scope decision — curated column subset, not all 435 columns: Fitting SDV on the full merged dataset (435 columns, 590,540 rows) was deliberately avoided. The V1-V339 Vesta engineered features are anonymized and not individually interpretable; synthesizing all of them would be slow, memory-heavy, and adds little value for this project's actual goals (fraud-ring graph detection + classification comparison). Instead, a curated subset was synthesized:
+
+Core transaction fields: TransactionID, isFraud, TransactionDT, TransactionAmt, ProductCD
+Full linkage-key set from Day 2 (primary, secondary, and high-confidence tiers), plus the has_device_identity flag
+A sample of 10 V-columns (arbitrarily spaced across the V1-V339 block) to retain some behavioral-feature signal for the Day 12-13 classifier, without the cost of modeling all 339
+
+Synthesizer choice — GaussianCopula over CTGAN: GaussianCopula was chosen over CTGAN (SDV's other common single-table option) because CTGAN's training time is substantially longer (often hours rather than minutes on this scale of data on a laptop) and its main advantage — better modeling of complex non-linear relationships — is not essential here. This project's priority is preserving linkage-key distributions and the overall fraud rate faithfully enough to plant realistic fraud rings on top, not achieving maximum generative fidelity. GaussianCopula fits in minutes and is sufficient for that purpose.
+
+TransactionID handling: Marked as an id-type primary key in SDV metadata rather than a modeled feature, so the synthesizer generates fresh unique IDs instead of trying to learn a distribution over what is really just a row identifier.
+
+Target synthetic row count: 400,000 (within the 300-500K range scoped on Day 1).
+
+Known risk flagged before running: GaussianCopula can under-represent minority classes in imbalanced data. The script includes an explicit real-vs-synthetic fraud rate comparison to check for this. If synthetic fraud rate drops significantly below the real ~3.5%, the plan is to either oversample fraud rows before fitting, or fit two separate synthesizers (fraud / non-fraud) and combine — not yet needed unless the check fails.
+
+[RESULTS — generate_synthetic.py, run completed]:
+
+Real fraud rate: 3.499% | Synthetic fraud rate: 3.528% | Difference: 0.029pp. Excellent preservation of the minority class — no per-class refitting needed.
+SDV's built-in evaluate_quality() was skipped due to a version mismatch between SingleTableMetadata and the evaluation module in the installed SDV release (AttributeError on _get_single_table_name). Replaced with a direct fraud-rate and distribution comparison instead of chasing SDV's internal API changes — sufficient for this project's validation needs.
+Known limitation — TransactionAmt tail compression: real data has a much longer right tail (max ~$31,937, std ~239) than synthetic (max ~$1,985, std ~132). GaussianCopula's copula-based fitting compresses extreme outliers in heavily right-skewed columns — a known characteristic, not a bug. Accepted as a limitation for this project rather than switching synthesizers, since the graph/classification work depends more on linkage-key sharing patterns than on faithfully reproducing rare high-value outlier transactions. Documented here for transparency.
+card1 cardinality is higher in synthetic (17,397 unique) than real (13,553) — expected, since GaussianCopula treats high-cardinality near-continuous columns somewhat continuously rather than resampling from the exact real value pool. Does not affect linkage/graph design, since fraud-ring detection depends on relative sharing patterns between synthetic transactions, not exact overlap with real-world card1 values.
