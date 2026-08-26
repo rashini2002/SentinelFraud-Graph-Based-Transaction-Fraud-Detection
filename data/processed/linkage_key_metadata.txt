@@ -1,0 +1,4 @@
+PRIMARY_LINKAGE_KEYS=card1,card2,addr1
+SECONDARY_LINKAGE_KEYS=card3,card4,card5,card6,addr2,P_emaildomain
+HIGH_CONFIDENCE_LINKAGE_KEYS=DeviceInfo,DeviceType
+DROPPED_LINKAGE_CANDIDATES=R_emaildomain,dist1,dist2

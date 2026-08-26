@@ -1,13 +1,13 @@
-# Data Profiling Summary — ULB Credit Card Fraud Dataset
+# Data Profiling Summary — IEEE-CIS Fraud Detection
 
-- Total rows: 590,540, columns: 394
-- Fraud rate: 3.4990%
-- Fraud count: 20663 / 590540
-- Time span: ~4392.0 hours
-- Columns with nulls: 342 (expect 0 — this dataset is pre-cleaned)
+- Transaction rows: 590,540, columns: 394
+- Identity rows: 144,233, columns: 41
+- Fraud rate: 3.499%
+- Identity match rate: 24.42%
+- Transaction columns >90% null: 2
+- Identity columns >90% null: 9
 
-## Note
-This dataset has NO identity/device columns (V1-V28 are PCA-anonymized).
-Identity/device linkage fields for fraud-ring simulation will be
-synthetically generated in the data generation step (Day 3-4), not
-sourced from this seed dataset.
+## Linkage candidate columns
+These are candidate fields for building the shared-attribute graph
+(fraud ring detection) in the analytics engineering phase:
+card1-6, addr1-2, P_emaildomain, R_emaildomain, dist1-2, DeviceType, DeviceInfo
