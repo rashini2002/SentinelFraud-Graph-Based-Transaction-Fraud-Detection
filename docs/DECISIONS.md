@@ -129,3 +129,23 @@ Real fraud rate: 3.499% | Synthetic fraud rate: 3.528% | Difference: 0.029pp. Ex
 SDV's built-in evaluate_quality() was skipped due to a version mismatch between SingleTableMetadata and the evaluation module in the installed SDV release (AttributeError on _get_single_table_name). Replaced with a direct fraud-rate and distribution comparison instead of chasing SDV's internal API changes — sufficient for this project's validation needs.
 Known limitation — TransactionAmt tail compression: real data has a much longer right tail (max ~$31,937, std ~239) than synthetic (max ~$1,985, std ~132). GaussianCopula's copula-based fitting compresses extreme outliers in heavily right-skewed columns — a known characteristic, not a bug. Accepted as a limitation for this project rather than switching synthesizers, since the graph/classification work depends more on linkage-key sharing patterns than on faithfully reproducing rare high-value outlier transactions. Documented here for transparency.
 card1 cardinality is higher in synthetic (17,397 unique) than real (13,553) — expected, since GaussianCopula treats high-cardinality near-continuous columns somewhat continuously rather than resampling from the exact real value pool. Does not affect linkage/graph design, since fraud-ring detection depends on relative sharing patterns between synthetic transactions, not exact overlap with real-world card1 values.
+
+## Day 4 — Fraud-Ring Injection
+
+Design: planted synthetic collusive fraud rings on top of the SDV-generated dataset, following the two-tier structure from Day 2:
+
+Tier 1 (high confidence): members share both a forced card1/addr1 pattern AND a forced DeviceInfo value. Eligibility restricted to rows with has_device_identity == True.
+Tier 2 (weak signal): members share only a forced card1/addr1 pattern, no device overlap. Eligible across the full dataset.
+
+Ring sizing: mix of small rings (Tier 1: 3-6 members, Tier 2: 2-5) and a smaller number of large rings (Tier 1: 10-18, Tier 2: 10-20), to reflect that most real fraud rings are small with occasional larger networks.
+
+Mule accounts: ~10% of each ring's members are drawn from isFraud == 0 rows rather than fraud-labeled rows, simulating transactions that individually look clean but are structurally part of a ring. This is intended to create cases the label alone cannot catch, motivating the graph-based approach — if a ring were fully caught by isFraud already, the graph method would add no value over a plain classifier.
+
+Ground truth handling: ring_id and ring_tier are stored both as columns in the main dataset and in a separate ring_ground_truth_log.csv. These fields are explicitly for scoring the Day 10 community detection results only. They are never used as classifier features or as inputs to graph construction — doing so would leak the answer into the method being evaluated.
+
+[RESULTS — inject_fraud_rings.py, run completed]:
+
+88 rings successfully injected (30 Tier 1, 58 Tier 2) — no rings skipped, confirming eligible-row pools (fraud rows, and device-identity fraud rows specifically for Tier 1) were large enough for the planned ring counts/sizes.
+483 transactions (0.121% of the 400K synthetic dataset) are involved in a ring — a small, realistic fraction, consistent with fraud rings being a minority pattern even within fraud-labeled transactions.
+Tier 1 mean ring size: 6.3 (max 17). Tier 2 mean ring size: 5.07 (max 20).
+27 mule (non-fraud-labeled) rows recruited into rings — somewhat lower than the 10% target of ~48 across 483 members, because the mule count per ring is rounded down for small rings (many small rings round to 0 mules). Not corrected, since it doesn't affect the validity of the design — just noted here for accuracy.
