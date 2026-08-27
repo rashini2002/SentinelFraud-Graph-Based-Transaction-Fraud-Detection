@@ -1,0 +1,74 @@
+version: 2
+
+models:
+  - name: stg_transactions
+    description: Cleaned, renamed, typed transaction data from raw_transactions.
+    columns:
+      - name: transaction_id
+        description: Unique transaction identifier.
+        data_tests:
+          - unique
+          - not_null
+      - name: is_fraud
+        description: Original fraud label.
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1]
+      - name: ring_tier
+        description: Ground-truth ring tier, evaluation-only.
+        data_tests:
+          - accepted_values:
+              values: ['tier1', 'tier2']
+              config:
+                where: "ring_tier is not null"
+
+  - name: fact_transactions
+    description: One row per transaction, joined to date/card/device dimensions.
+    columns:
+      - name: transaction_id
+        description: Unique transaction identifier.
+        data_tests:
+          - unique
+          - not_null
+      - name: is_fraud
+        data_tests:
+          - not_null
+
+  - name: fact_entity_edges
+    description: Unified graph edge list combining Tier 1 and Tier 2 linkage.
+    columns:
+      - name: edge_id
+        description: Surrogate key for each edge.
+        data_tests:
+          - unique
+          - not_null
+      - name: transaction_id_a
+        data_tests:
+          - not_null
+      - name: transaction_id_b
+        data_tests:
+          - not_null
+      - name: shared_attribute_type
+        data_tests:
+          - accepted_values:
+              values: ['card_addr', 'device']
+      - name: edge_weight
+        description: Confidence weight — 1.0 for card/addr, 2.0 for device.
+        data_tests:
+          - accepted_values:
+              values: [1.0, 2.0]
+
+  - name: dim_date
+    columns:
+      - name: date_key
+        data_tests:
+          - unique
+          - not_null
+
+  - name: dim_device
+    columns:
+      - name: device_key
+        data_tests:
+          - unique
+          - not_null

@@ -245,3 +245,37 @@ structure rather than a modeling error, and is left as-is for this project
 rather than "fixed" by artificially collapsing the grain — doing so would
 misrepresent what the data actually contains. Documented here as a known
 design limitation, worth discussing if raised.
+
+---
+
+## Day 8 — dbt Testing & CI Polish
+
+**Schema tests added** across stg_transactions, fact_transactions,
+fact_entity_edges, dim_date, and dim_device: not_null and unique on all
+primary/surrogate keys, accepted_values on is_fraud (0/1),
+shared_attribute_type ('card_addr'/'device'), edge_weight (1.0/2.0), and
+ring_tier ('tier1'/'tier2', only where not null).
+
+**Custom singular tests added:** assert_no_negative_amounts (no
+transaction should have a negative amount) and
+assert_positive_edge_weights (every graph edge weight must be positive) —
+both pass when the query returns zero rows.
+
+**dbt version note:** this dbt version (1.8.10) uses the newer `data_tests`
+key rather than the deprecated `tests` key — encountered and fixed a
+deprecation warning during setup.
+
+**Setup issue — duplicate source definition:** initially defined the
+`raw.raw_transactions` source in both `models/staging/sources.yml` (Day 5)
+and `models/marts/schema.yml` (Day 8), which dbt rejected as an ambiguous
+duplicate. Fixed by keeping the source definition only in sources.yml and
+moving its column-level test (TransactionID unique/not_null) there instead.
+
+**Cleanup:** removed `models/example/` — the placeholder starter models
+dbt auto-generates on `dbt init` (my_first_dbt_model, my_second_dbt_model).
+These were never built as real tables, so their auto-generated tests
+failed with "relation does not exist." Not a real issue, just unused
+template scaffolding — removed for a clean project.
+
+**[RESULTS]:** 18 of 18 real data tests passing after removing the
+unrelated example-model test failures.
