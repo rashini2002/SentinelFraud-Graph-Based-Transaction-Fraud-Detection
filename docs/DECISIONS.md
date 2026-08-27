@@ -279,3 +279,42 @@ template scaffolding — removed for a clean project.
 
 **[RESULTS]:** 18 of 18 real data tests passing after removing the
 unrelated example-model test failures.
+
+---
+
+## Day 9 — Graph Construction (NetworkX)
+
+**Built from fact_entity_edges:** 78,408 edges loaded; where a pair of
+transactions was connected via both card/addr AND device sharing, the two
+edge weights were accumulated into a single stronger edge rather than kept
+as duplicates (2 edges between the same node pair collapsed into 1 in
+NetworkX's undirected Graph, weight summed).
+
+**[RESULTS]:**
+- Nodes: 27,562 (6.9% of the 400,000 total transactions) — only
+  transactions with at least one shared-attribute connection appear in the
+  graph; the rest are correctly excluded as having no linkage signal.
+- Edges: 77,688 (slightly fewer than 78,408 raw edges, due to the
+  weight-accumulation merge described above).
+- Connected components: 10,404 total. Of these, 9,416 are just isolated
+  pairs (size 2) — low information value. The interesting structure is in
+  the 988 components with size >= 3.
+- **Components containing at least one true ring member: 88 — an exact
+  match to the number of injected rings**, with zero accidental merging
+  between separate rings. This confirms the ring-injection design (Day 4)
+  and the group-size-capped linkage logic (Day 6) work correctly together
+  to produce cleanly separable ring structures.
+- Max node degree: 49, consistent with the group-size cap of 50 configured
+  in Day 6 (var: max_linkage_group_size).
+
+**Visualization finding — confirms the Day 6 DeviceInfo noise hypothesis:**
+The saved sample subgraph (docs/sample_fraud_subgraph.png) shows a small,
+fully-red (all true-ring-member) dense clique connected via a single
+bridging node to a much larger, fully-blue (no ring membership) dense
+clique. This is a direct visual confirmation of the Day 6 finding that
+DeviceInfo sharing produces large cliques of coincidentally-connected,
+unrelated transactions — the bridging node happens to be a ring member
+who also shares a generic device value with the unrelated cluster. This
+image is a strong illustration of why Day 10's community detection will
+need to weight/filter by cluster density rather than treat all connected
+components as equally meaningful.
