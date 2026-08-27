@@ -208,3 +208,20 @@ Runtime Error
 [0m22:36:09.803071 [debug] [MainThread]: Command `dbt run` failed at 22:36:09.803027 after 0.03 seconds
 [0m22:36:09.803247 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1070d35b0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1093d9e10>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1093db7c0>]}
 [0m22:36:09.804032 [debug] [MainThread]: Flushing usage events
+[0m21:35:55.043476 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x107d679a0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x111fd9de0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x111fda500>]}
+
+
+============================== 21:35:55.045697 | 3e7f6779-7262-403c-b979-204b80fafbd1 ==============================
+[0m21:35:55.045697 [info ] [MainThread]: Running with dbt=1.8.10
+[0m21:35:55.045971 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'version_check': 'True', 'debug': 'False', 'log_path': 'logs', 'fail_fast': 'False', 'profiles_dir': '/Users/rashinidissanayake/.dbt', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'empty': 'False', 'log_format': 'default', 'static_parser': 'True', 'introspect': 'True', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'target_path': 'None', 'invocation_command': 'dbt run --select dim_date dim_card dim_device fact_transactions fact_entity_edges', 'send_anonymous_usage_stats': 'True'}
+[0m21:35:55.046148 [info ] [MainThread]: This version of dbt is deprecated and no longer receives regular patches, including for known bugs. We recommend upgrading to a newer supported version of dbt: https://docs.getdbt.com/docs/dbt-versions
+[0m21:35:55.046292 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'deprecated_version_invocation', 'label': '3e7f6779-7262-403c-b979-204b80fafbd1', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x107d679a0>]}
+[0m21:35:55.046566 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No dbt_project.yml found at expected path /Users/rashinidissanayake/Desktop/sentinelfraud/dbt_project.yml
+  Verify that each entry within packages.yml (and their transitive dependencies) contains a file named dbt_project.yml
+  
+[0m21:35:55.431515 [debug] [MainThread]: Resource report: {"command_name": "run", "command_success": false, "command_wall_clock_time": 0.4249339, "process_in_blocks": "0", "process_kernel_time": 0.111205, "process_mem_max_rss": "122339328", "process_out_blocks": "0", "process_user_time": 1.023434}
+[0m21:35:55.432793 [debug] [MainThread]: Command `dbt run` failed at 21:35:55.432618 after 0.43 seconds
+[0m21:35:55.433434 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x107d679a0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x111fda1d0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x111fdb7c0>]}
+[0m21:35:55.436682 [debug] [MainThread]: Flushing usage events

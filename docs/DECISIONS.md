@@ -201,3 +201,47 @@ int_shared_card_addr: 12,086 total edges, 1,859 true ring pairs (~15% of edges c
 int_shared_device: 66,322 total edges, only 720 true ring pairs (~1%).
 
 Finding — DeviceInfo is noisier than expected as a "high-confidence" signal: Day 2 profiling showed DeviceInfo has only 1,786 unique values across ~118,666 identity-matched rows — an average real-world group size of ~66 even before capping. This indicates DeviceInfo contains many generic, recurring strings (e.g. common OS/browser labels or device model codes) rather than truly unique-per-user fingerprints, so plenty of unrelated real transactions naturally collide on device values. This means raw device-sharing edge count alone is a weaker signal than assumed in the original two-tier design — Day 10's community detection will need to rely on edge density/clustering structure, not just edge presence, to separate genuine fraud rings from generic device-string collisions. Documented here as a design consideration carried into Phase 3, not a bug to fix now.
+
+---
+
+## Day 7 — Mart Layer (Star Schema)
+
+**Models built:** dim_date, dim_card, dim_device, fact_transactions,
+fact_entity_edges.
+
+**dim_date:** TransactionDT in IEEE-CIS is a relative second-offset from an
+unspecified reference point, not a real timestamp. Anchored to an arbitrary
+reference date (2017-12-01, a common convention seen in public analyses of
+this dataset) purely to derive usable calendar attributes (day-of-week,
+weekend flag) for BI purposes. This is a synthetic calendar for analytical
+convenience, not a factual claim about when transactions occurred —
+documented here to avoid confusion later, especially since the dashboard
+(Phase 4) will display real-looking dates derived from this assumption.
+
+**fact_entity_edges:** unifies int_shared_card_addr (Tier 2) and
+int_shared_device (Tier 1) into a single edge list for Day 9's graph
+construction. Tier 1 (device) edges are weighted 2.0, Tier 2 (card/addr)
+edges weighted 1.0, reflecting relative confidence — used by Day 10's
+community detection to favor higher-confidence connections when forming
+clusters.
+
+**[RESULTS]:**
+- fact_transactions: 400,000 rows — exact match to the synthetic dataset,
+  confirming no fan-out or row loss from the dimension joins.
+- fact_entity_edges: 78,408 rows — exact match to 12,086 + 66,322 from
+  Day 6, confirming the union of both linkage tiers is correct.
+- dim_date: 182 rows (~6 months), consistent with the dataset's ~4,392-hour
+  (~183 day) time span from Day 2 profiling.
+- dim_device: 2,649 distinct device_type + device_info combinations.
+
+**Known limitation — dim_card is a near-degenerate dimension:**
+dim_card has 399,981 rows — almost one row per transaction, not the small,
+reusable lookup table a star schema dimension is meant to be. This is
+because the 6-column composite (card1-card6) is nearly unique per row in
+this dataset; card1 alone already has high cardinality (17,397 unique
+values in the synthetic data, per Day 3), and combining 5 more fields
+pushes uniqueness even higher. This is a genuine tradeoff of this dataset's
+structure rather than a modeling error, and is left as-is for this project
+rather than "fixed" by artificially collapsing the grain — doing so would
+misrepresent what the data actually contains. Documented here as a known
+design limitation, worth discussing if raised.
