@@ -640,3 +640,117 @@ Tier and Daily Fraud Rate Trend side-by-side below, sharing one combined
 color legend (Fraud Label) positioned to the right of the canvas. All
 five elements assembled into one dashboard: "SentinelFraud — Executive
 Overview."
+
+---
+
+## Day 16 (addendum) — Dashboard #2: Transaction Segmentation & EDA
+
+Built a second Tableau dashboard demonstrating standard EDA/segmentation
+skills, using only fact_transactions.csv (no new data export needed):
+- Fraud Rate by Product Code (bar, ProductCd)
+- Fraud Rate — Weekend vs. Weekday (bar, Is Weekend)
+- Fraud Rate by Device Identity Presence (bar, Has Device Identity)
+- Transaction Amount Distribution (binned histogram, colored by Fraud Label)
+
+**Technical note — histogram construction pitfall:** initially dragged
+the raw `Transaction Id` field onto Rows without aggregating it, which
+combined with a binned `Transaction Amt` on Columns caused a Cartesian
+cross-join (400,000 IDs x 100 bins), triggering a "densification row
+limit exceeded" error (attempted ~10,000,089 rows against a 10M cap).
+Fixed by ensuring `Transaction Id` was aggregated as `CNT(Transaction Id)`
+before use, rather than left as a discrete raw field.
+
+**[RESULTS] — segmentation findings:**
+- ProductCd: fraud rate ranges narrowly from ~3.4% (W) to ~4.3% (R) — a
+  mild but real gradient.
+- Weekend vs. Weekday: no meaningful difference (~3.5% both) — day-of-week
+  is not a useful fraud signal in this dataset.
+- Has Device Identity: ~4.0% (has device data) vs ~3.5% (no device data)
+  — the most notable gap among the segments checked, though still modest.
+  This is a natural tie-in to the graph-based approach's premise, since
+  device/identity linkage is exactly what Tier 1 ring detection depends
+  on (Day 2, Day 6).
+- Transaction Amount Distribution: fraud proportion stays roughly
+  constant across all amount bins — no concentration at any particular
+  range. Consistent with Day 12's SHAP results, where transaction_amt
+  was not a top-ranked baseline feature.
+
+  ---
+
+## Day 16 (addendum 2) — Dashboard #3: Model Performance & Explainability
+
+Built using day13_comparison.csv, day13_shap_importance.csv, and
+day14_threshold_analysis.csv (all pre-exported, no new data pull needed).
+
+**Baseline vs Enhanced Metrics** (grouped bar): built using the
+Measure Names/Measure Values approach rather than a manual pivot (the
+"Pivot" option was not available via right-click on selected fields in
+this Tableau version — worked around by using the standard Measure
+Names/Measure Values mechanism instead). Had to explicitly filter out
+an auto-generated "Count of day13_comparison.csv" measure that Tableau
+added when detecting the CSV as a table — this measure was inflating
+every bar to 100% and distorting the Y-axis scale until removed from
+the Measure Names filter.
+
+**SHAP Feature Importance** (horizontal bar, top 10): confirms the Day
+13 finding directly in a shareable dashboard format — graph_community_
+fraud_density visible as the only graph feature in the top 10, at rank
+10, alongside v100/v130/transaction_amt/v45 dominating.
+
+**Recall & Precision by Threshold** (dual-axis line chart): required
+fixing two mistakes during construction — (1) Threshold was initially
+summed as SUM(Threshold) rather than treated as a discrete axis
+dimension, collapsing all 9 threshold values into one point; (2) the
+mark type defaulted to a scatter/shape rather than Line. Once corrected,
+the chart shows the classic precision-recall crossover pattern, visually
+confirming the Day 14 finding that no threshold achieves both a
+realistic alert volume and meaningful recall simultaneously.
+
+**[RESULTS]:** all three charts cross-validate exactly against the
+documented Day 12/13/14 findings — no new numbers, but a genuinely
+useful shareable/visual restatement of the model evaluation story for
+a non-technical audience.
+
+---
+
+## Day 16 (addendum 3) — Dashboard #4: Fraud Ring Network Analysis
+
+Built using day10_ring_recovery.csv and day10_community_purity.csv.
+
+**Ring Recovery by Tier:** required converting the boolean `Fully
+Recovered` field into a numeric calculated field
+(`IF [Fully Recovered] THEN 1 ELSE 0 END`) before it could be averaged,
+since Tableau treats booleans as dimensions (not aggregatable measures)
+by default. Result: both tier1 and tier2 show 100% recovery, matching
+the Day 10 finding exactly.
+
+**Community Purity Distribution** (histogram, 0.1 bins): confirms the
+94.8% mean purity finding visually — an overwhelming concentration at
+the 1.0 bin (~75+ of 88 communities), with a small honest tail of
+partially-diluted communities across 0.2-0.9.
+
+**Ring Size vs. Purity** (scatter): required disabling the default
+measure aggregation (Analysis -> Aggregate Measures, or equivalently
+adding Community Id to Detail) — without this, Tableau summed all 88
+communities into a single point. Once fixed, this became the single
+most effective chart in the entire project for visualizing the Day 6/9
+noise-dilution finding: small communities cluster tightly near 1.0
+purity, while purity drops sharply and consistently as community size
+increases past ~25 members, visually confirming that larger clusters
+have proportionally more opportunity to absorb coincidental
+DeviceInfo-sharing noise alongside a genuine ring.
+
+**[RESULTS]:** all three charts independently and visually reproduce
+Day 10's quantitative findings (100% recall, 94.8% mean purity, and the
+specific noise-dilution pattern), giving the graph-analytics phase of
+the project a standalone, shareable visual narrative distinct from the
+raw metrics tables.
+
+---
+
+**Tableau workbook summary:** four dashboards now built —
+(1) Executive Overview, (2) Transaction Segmentation & EDA,
+(3) Model Performance & Explainability, (4) Fraud Ring Network Analysis
+— together demonstrating executive reporting, EDA/segmentation, ML
+results communication, and graph-analytics visualization within a
+single portfolio deliverable.
