@@ -583,3 +583,45 @@ correctly identified as ring 11) and the top of the density-sorted table
 fraud_density = 1.0) — visually confirms the Day 10 finding that most
 rings recover as fully pure, uncontaminated clusters.
 
+---
+
+## Day 16 — Tableau Executive Dashboard
+
+**Tableau Public cannot connect to Postgres directly** (no database
+connector in the free edition — only file-based sources). Built
+src/export_for_tableau.py to export fact_transactions (joined with
+dim_date for real calendar dates), fact_entity_edges, and the Day 10/13/14
+result CSVs into dashboards/tableau_data/ for Tableau to open as text
+file connections.
+
+**Data source setup issue:** dragging multiple CSVs onto one Tableau data
+source canvas triggered an automatic "relationship" prompt between
+fact_transactions.csv and fact_entity_edges.csv (no valid shared key
+exists between a one-row-per-transaction table and a one-row-per-edge-pair
+table). Resolved by removing the relationship and, after a subsequent
+"Bad Connection" error corrupted the combined data source object,
+reconnecting fact_transactions.csv as a single, standalone text file
+connection. Each CSV is now used as an independent data source per sheet
+rather than attempting to relate them.
+
+**Dashboard built — "SentinelFraud — Executive Overview":**
+- Three KPI cards: Total Transactions (400,000), Overall Fraud Rate
+  (3.53% — matches Day 3's synthetic fraud rate almost exactly), Known
+  Fraud Rings (88 — Count Distinct of Ring Id, matching the Day 4
+  injection count exactly).
+- Daily Fraud Rate Trend: a line chart (AVG(Is Fraud) by DAY(Calendar
+  Date)) showing fraud rate oscillating around ~3.5% with no deliberate
+  trend over the ~182-day synthetic window, as expected since fraud rate
+  wasn't varied over time during Day 4's injection design.
+
+**Layout note:** the built-in sheet title text object proved unreliable
+for fitting "Known Fraud Rings" on one line even at reduced font sizes —
+the container's fixed width caused mid-word wrapping regardless of font
+size. Resolved by hiding the sheet's automatic title and replacing it
+with a manually placed Text object, which allows independent width/size
+control rather than being bound to the worksheet title's auto-layout
+behavior.
+
+**Note on scope:** the Tier 1 vs Tier 2 ring-tier breakdown chart
+(originally planned for this dashboard) was not completed in this
+session — flagged as a follow-up addition rather than treated as done.
