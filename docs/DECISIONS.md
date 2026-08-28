@@ -362,3 +362,30 @@ might be, which could share attributes with legitimate transactions in
 messier, less clean ways. This evaluates whether the pipeline can recover
 a KNOWN, deliberately-injected structure — a valid and useful test of the
 method, but not a claim about real-world production performance.
+
+---
+
+## Day 11 — Graph Feature Engineering
+
+**Features engineered:** graph_degree, graph_weighted_degree,
+graph_community_id, graph_community_size, graph_community_fraud_density —
+computed for all 400,000 transactions (not just the 27,562 in the graph;
+unconnected transactions get explicit defaults: degree 0, community_size
+1, fraud_density 0, rather than being dropped).
+
+**Leakage safeguard:** graph_community_fraud_density explicitly excludes
+each transaction's own fraud label when computing its community's fraud
+rate. Without this, a fraud transaction would partly predict its own
+label back to itself, artificially inflating Day 13's enhanced-model
+performance.
+
+**[RESULTS] — sanity check before modeling:**
+- Transactions with any graph connection: 27,562 (6.89%).
+- Mean graph_degree: 0.379 (legit) vs 0.659 (fraud) — fraud transactions
+  are somewhat more likely to appear in a shared-attribute connection.
+- Mean graph_community_size: 1.420 (legit) vs 1.774 (fraud).
+- **Mean graph_community_fraud_density: 0.0026 (legit) vs 0.0303 (fraud)
+  — a ~12x separation.** Despite small absolute values (diluted by the
+  93% of unconnected transactions defaulting to 0), this ratio is a
+  strong early indicator that community fraud density will carry real
+  predictive signal in the Day 12/13 classifier comparison.
