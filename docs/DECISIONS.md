@@ -494,3 +494,51 @@ over a tabular-only baseline; validated via SHAP that the specific
 graph feature hypothesized to matter most (based on independent
 observational analysis) was confirmed as the top contributing graph
 signal, despite covering only 6.9% of transactions."
+
+---
+
+## Day 14 — Threshold Analysis & Business Cost Framing
+
+**Illustrative cost assumptions used** (explicitly not real operational
+data, since this is a portfolio project on synthetic data): $5 per false
+positive (investigator review time), $150 per false negative (average
+fraud loss). Documented as illustrative placeholders, not empirical
+claims, anywhere this analysis is referenced.
+
+**[RESULTS] — naive cost minimization produced an operationally absurd
+recommendation:** the threshold minimizing raw total cost (0.1) flags
+99.83% of all legitimate transactions for review. This is mathematically
+correct given the stated per-transaction costs (a missed fraud case costs
+30x more than a false alarm), but is not a usable business policy — no
+investigator team can review essentially every transaction that occurs.
+
+**Root cause and correction:** naive linear cost-sum minimization ignores
+capacity constraints — it treats each false positive as an independent,
+"cheap" unit cost without accounting for the fact that a real investigation
+team has a fixed daily review capacity regardless of per-review cost. This
+is a known pitfall in cost-sensitive threshold selection under extreme
+class imbalance: when false-negative cost is high enough relative to
+false-positive cost, naive minimization will always push toward flagging
+nearly everything. The correct framing is to fix a realistic operational
+constraint FIRST (e.g. "we can review at most 1-2% of transactions per
+day") and report recall AT that constrained volume, rather than solve an
+unconstrained cost equation.
+
+**Reframed, realistic operating point:** at threshold 0.6 (1.41% of
+legitimate transactions flagged — a plausible daily review volume),
+recall is only 4.7%. This exposes an honest, useful limitation: given the
+Day 12 finding of weak baseline predictive power (attributed to SDV
+synthesis washing out complex feature relationships), there is no
+threshold that achieves both a realistic alert volume AND meaningful
+fraud recall simultaneously in this project's current state. This
+traces directly back to the Day 3 synthetic-data generation choice
+rather than a flaw in the modeling or threshold-selection methodology
+itself — a coherent chain of cause and effect worth being able to
+explain end-to-end.
+
+**Takeaway for write-ups:** rather than presenting a single "optimal"
+threshold number, this project demonstrates the more mature practice of
+(1) recognizing when naive cost minimization produces an unusable
+recommendation, (2) diagnosing why (capacity constraints, extreme
+imbalance), and (3) reframing the question around a realistic operational
+constraint instead.
