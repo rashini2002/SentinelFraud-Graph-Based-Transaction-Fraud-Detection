@@ -585,6 +585,8 @@ rings recover as fully pure, uncontaminated clusters.
 
 ---
 
+---
+
 ## Day 16 — Tableau Executive Dashboard
 
 **Tableau Public cannot connect to Postgres directly** (no database
@@ -622,6 +624,19 @@ with a manually placed Text object, which allows independent width/size
 control rather than being bound to the worksheet title's auto-layout
 behavior.
 
-**Note on scope:** the Tier 1 vs Tier 2 ring-tier breakdown chart
-(originally planned for this dashboard) was not completed in this
-session — flagged as a follow-up addition rather than treated as done.
+**Note on scope:** the Tier 1 vs Tier 2 ring-tier breakdown chart was
+completed in a follow-up pass — "Ring Composition by Tier," a stacked
+bar chart (Ring Tier on Columns, Count of Transaction Id on Rows, colored
+by a calculated Fraud Label field distinguishing Fraud vs. Legit/Mule
+members). Result: 483 total marks, matching the exact ring-member count
+from Day 4 (189 Tier 1 + 294 Tier 2), with the ~10% mule fraction visibly
+present as a small orange segment in both bars — a direct visual
+confirmation that the Day 4 injection design's mule-recruitment logic
+is present in the actual data, not just the generation script's intent.
+
+**Final dashboard layout:** three KPI cards (Total Transactions, Overall
+Fraud Rate, Known Fraud Rings) across the top row; Ring Composition by
+Tier and Daily Fraud Rate Trend side-by-side below, sharing one combined
+color legend (Fraud Label) positioned to the right of the canvas. All
+five elements assembled into one dashboard: "SentinelFraud — Executive
+Overview."
