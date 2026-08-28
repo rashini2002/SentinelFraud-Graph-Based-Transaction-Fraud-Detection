@@ -542,3 +542,44 @@ threshold number, this project demonstrates the more mature practice of
 recommendation, (2) diagnosing why (capacity constraints, extreme
 imbalance), and (3) reframing the question around a realistic operational
 constraint instead.
+
+---
+
+## Day 15 — Streamlit Fraud Ring Network Explorer
+
+**Built:** an interactive Streamlit app (dashboards/app.py) that loads the
+saved transaction graph, reruns Louvain (cached, same seed as Day 10 for
+consistent community IDs), and lets a user browse, filter, and visually
+inspect detected clusters.
+
+**Design choices:**
+- Filters clusters to size >= 3 by default, excluding the 9,416 isolated
+  pairs (size 2) identified in Day 9 as low information value — keeps the
+  browsing experience focused on meaningful structure rather than noise.
+- Cluster network visualization uses Plotly (interactive hover showing
+  transaction ID, fraud label, and ring membership per node) rather than
+  a static image, so the app itself demonstrates the graph structure
+  live rather than just displaying a pre-rendered plot.
+- Three header KPIs (total communities, communities with known rings,
+  mean fraud density) give an at-a-glance summary before any filtering.
+
+**Known tradeoff — "Communities with known fraud rings" shows 78, not
+88:** the size >= 3 filter excludes a handful of genuine small Tier 2
+rings (some injected as size-2 rings in Day 4's rng.integers(2, 6, ...)
+range). This is a deliberate, minor UX tradeoff — a cleaner browsing
+experience at the cost of undercounting true rings by 10. Documented
+here rather than treated as a bug, since the underlying Day 10 evaluation
+(88/88 recovered) remains the authoritative ring-recovery number; this
+app is a browsing tool, not the evaluation source of truth.
+
+**Fix applied:** replaced deprecated `use_container_width=True` parameter
+(Streamlit deprecation warning, removal after 2025-12-31) with
+`width="stretch"` across the dataframe and plotly_chart calls.
+
+**Verification:** manually inspected several high-density clusters in the
+running app (e.g. community 1331 — cluster size 5, 100% fraud density,
+correctly identified as ring 11) and the top of the density-sorted table
+(clusters matching ring_ids 54, 76, 67, 53, 75, 86, 74, 84, 18, 31, all at
+fraud_density = 1.0) — visually confirms the Day 10 finding that most
+rings recover as fully pure, uncontaminated clusters.
+
