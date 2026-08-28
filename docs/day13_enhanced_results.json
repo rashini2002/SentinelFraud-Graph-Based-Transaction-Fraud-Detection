@@ -1,0 +1,39 @@
+{
+  "enhanced": {
+    "label": "Enhanced (baseline + graph features)",
+    "auc": 0.536236667210705,
+    "precision": 0.042297872340425535,
+    "recall": 0.3521076868579525,
+    "f1": 0.07552330661398776
+  },
+  "comparison": [
+    {
+      "metric": "AUC",
+      "baseline": 0.5195157084727572,
+      "enhanced": 0.536236667210705,
+      "improvement": 0.016720958737947766,
+      "improvement_pct": 3.2
+    },
+    {
+      "metric": "Precision",
+      "baseline": 0.03825603761487497,
+      "enhanced": 0.042297872340425535,
+      "improvement": 0.004041834725550565,
+      "improvement_pct": 10.6
+    },
+    {
+      "metric": "Recall",
+      "baseline": 0.3804463336875664,
+      "enhanced": 0.3521076868579525,
+      "improvement": -0.0283386468296139,
+      "improvement_pct": -7.4
+    },
+    {
+      "metric": "F1",
+      "baseline": 0.06952131274881057,
+      "enhanced": 0.07552330661398776,
+      "improvement": 0.006001993865177191,
+      "improvement_pct": 8.6
+    }
+  ]
+}
