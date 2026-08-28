@@ -122,7 +122,3 @@ streamlit run dashboards/app.py
 - **dim_card degeneracy:** the card dimension table is a near-degenerate dimension (399,981 rows for 400,000 facts) due to high natural cardinality in the synthetic card fields — a real dataset characteristic, documented rather than artificially "fixed."
 
 Full day-by-day reasoning, every design decision, and every honest dead-end are documented in [`docs/DECISIONS.md`](docs/DECISIONS.md).
-
-## Resume Summary
-
-> Built an end-to-end graph-based fraud detection pipeline (dbt, PostgreSQL, NetworkX, XGBoost) achieving 100% recall and 94.8% mean cluster purity in recovering synthetically injected fraud rings; diagnosed a synthetic-data limitation constraining baseline classifier performance, engineered graph-derived features that delivered a SHAP-validated 8.6% F1 improvement, and identified a naive cost-minimization pitfall in threshold selection — communicated across four Tableau dashboards and an interactive Streamlit network explorer.
