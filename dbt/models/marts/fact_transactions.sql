@@ -47,7 +47,9 @@ select
     txn.is_fraud,
     txn.has_device_identity,
     txn.ring_id,
-    txn.ring_tier
+    txn.ring_tier,
+    txn.v1, txn.v12, txn.v45, txn.v78, txn.v100,
+    txn.v130, txn.v160, txn.v200, txn.v250, txn.v300
 from txn
 left join dates d
     on d.calendar_date = (select reference_date from reference) + (txn.transaction_dt / 86400)::int

@@ -31,7 +31,21 @@ renamed as (
 
         -- ground truth — evaluation only, never a model feature
         "ring_id"::text                         as ring_id,
-        "ring_tier"::text                       as ring_tier
+        "ring_tier"::text                       as ring_tier,
+
+        -- sampled V-columns retained from Day 3 for classifier use
+        -- (these were generated in the synthetic data but never selected
+        -- into staging until this fix — see docs/DECISIONS.md Day 12)
+        "V1"::numeric                           as v1,
+        "V12"::numeric                          as v12,
+        "V45"::numeric                          as v45,
+        "V78"::numeric                          as v78,
+        "V100"::numeric                         as v100,
+        "V130"::numeric                         as v130,
+        "V160"::numeric                         as v160,
+        "V200"::numeric                         as v200,
+        "V250"::numeric                         as v250,
+        "V300"::numeric                         as v300
 
     from source
 

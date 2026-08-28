@@ -389,3 +389,56 @@ performance.
   93% of unconnected transactions defaulting to 0), this ratio is a
   strong early indicator that community fraud density will carry real
   predictive signal in the Day 12/13 classifier comparison.
+
+  ---
+
+## Day 12 — Baseline XGBoost (No Graph Features)
+
+**Pipeline gap caught and fixed before training:** discovered that
+stg_transactions.sql (Day 5) never selected the 10 sampled V-columns
+(V1, V12, V45...V300) that were specifically retained during Day 3's SDV
+synthesis for classifier use — they were silently dropped at the staging
+layer and never reached fact_transactions. Fixed by adding them to both
+stg_transactions.sql and fact_transactions.sql, then rebuilding the dbt
+models and regenerating the graph features table before training.
+Modeling table shape confirmed to grow from (400000, 16) to (400000, 26)
+after the fix, verifying the columns flowed through correctly.
+
+**Features used:** transaction_amt, has_device_identity,
+product_cd_encoded, p_email_domain_encoded (label-encoded categoricals),
+and the 10 sampled V-columns. Explicitly EXCLUDES card1/addr1/card2-6 as
+direct features (too high-cardinality to generalize — their predictive
+value is what the graph features are meant to capture in aggregated
+form) and EXCLUDES ring_id/ring_tier (ground truth, evaluation-only).
+
+**SMOTE NaN fix:** SMOTE (scikit-learn-based) cannot handle NaN, unlike
+XGBoost's native missing-value handling used elsewhere per the Day 2
+decision. Median imputation was applied ONLY within the SMOTE training
+path (using train-set medians applied to both train and test, avoiding
+test-set leakage) — the class-weighted path's NaNs are left untouched,
+preserving the original Day 2 design decision.
+
+**[RESULTS]:**
+- Class-weighted (scale_pos_weight=27.34): AUC 0.5195, Precision 0.038,
+  Recall 0.380, F1 0.070.
+- SMOTE (oversampled to 50% fraud): AUC 0.4770 — WORSE than random
+  chance, with recall collapsing to 0.6%. Selected class-weighted as the
+  baseline for Day 13's comparison.
+
+**Key finding — baseline predictive signal is very weak, likely due to
+SDV/GaussianCopula limitations:** AUC 0.52 is barely better than random
+guessing. The most probable explanation: GaussianCopula (Day 3) preserves
+marginal distributions and pairwise linear correlations well (which is
+why fraud rate and simple stats matched the real data closely), but
+likely destroyed the complex, nonlinear relationships between the
+Vesta-engineered V-columns and the fraud label that make them genuinely
+predictive in the real IEEE-CIS dataset. This is a real, documented cost
+of using synthetic tabular data for classifier training — aggregate
+statistics survived synthesis; fine-grained predictive structure did not.
+
+This sets up Day 13 as a meaningful test: the graph features (built from
+deliberately, robustly injected ring structure — not dependent on
+tabular synthesis fidelity) are expected to show a much clearer
+improvement, precisely because they don't rely on the same fragile
+synthetic relationships the baseline tabular features do.
+ 

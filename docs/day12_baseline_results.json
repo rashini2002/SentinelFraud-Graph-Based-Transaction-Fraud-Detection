@@ -1,0 +1,17 @@
+{
+  "class_weighted": {
+    "label": "Baseline (class-weighted)",
+    "auc": 0.5195157084727572,
+    "precision": 0.03825603761487497,
+    "recall": 0.3804463336875664,
+    "f1": 0.06952131274881057
+  },
+  "smote": {
+    "label": "Baseline (SMOTE)",
+    "auc": 0.47701122424137576,
+    "precision": 0.033268101761252444,
+    "recall": 0.0060219624512929506,
+    "f1": 0.010197960407918417
+  },
+  "selected_for_comparison": "Baseline (class-weighted)"
+}
