@@ -318,3 +318,47 @@ who also shares a generic device value with the unrelated cluster. This
 image is a strong illustration of why Day 10's community detection will
 need to weight/filter by cluster density rather than treat all connected
 components as equally meaningful.
+
+---
+
+## Day 10 — Community Detection (Louvain) & Ring-Recovery Evaluation
+
+**Method:** ran `networkx.algorithms.community.louvain_communities` (built
+into NetworkX 3.x — no separate python-louvain package needed) on the
+weighted transaction graph from Day 9. Evaluated using two complementary
+metrics rather than one, since Day 9's visualization already suggested
+recall and precision could diverge:
+- **Ring recovery (recall):** does 100% of a ring's members end up in the
+  same detected community?
+- **Community purity (precision):** of a community containing ring
+  members, what fraction of the WHOLE community (including any attached
+  noise) is actually the dominant ring?
+
+**[RESULTS]:**
+- Louvain detected 10,405 communities from 27,562 nodes.
+- **Ring recovery: 88/88 rings (100%) fully recovered**, both Tier 1
+  (device) and Tier 2 (card/addr) — every injected ring's members were
+  grouped into a single community with zero fragmentation.
+- **Community purity: mean 0.948** across the 88 ring-containing
+  communities. Only 3 communities had purity below 0.5 (majority noise):
+  ring 41 (29.2% pure, diluted by a 48-node community), ring 44 (31.4%
+  pure, 35-node community), and ring 6 (42.9% pure, 7-node community).
+
+**Interpretation:** the Day 6/Day 9 concern about DeviceInfo noise was
+real but more contained than initially feared — the group-size cap
+(max_linkage_group_size = 50, set in Day 6) already filtered out most of
+the damage before it reached the graph. Only 3 of 88 rings (3.4%) ended up
+meaningfully diluted by coincidental noise cliques. The single subgraph
+visualized in Day 9 was, in retrospect, one of these 3 rare worst-case
+examples — a real but non-representative illustration, worth noting rather
+than implying it's typical.
+
+**Honest caveat for write-ups/interviews:** 100% recall is a strong result
+but should be read in context — the injected rings used deliberately
+distinctive forced values (a fabricated card1/addr1 pair, or a fabricated
+DeviceInfo string) that don't naturally recur elsewhere in the data by
+construction, making them easier to detect than real-world fraud rings
+might be, which could share attributes with legitimate transactions in
+messier, less clean ways. This evaluates whether the pipeline can recover
+a KNOWN, deliberately-injected structure — a valid and useful test of the
+method, but not a claim about real-world production performance.
